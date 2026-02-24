@@ -1,0 +1,54 @@
+/* GLOBAL RESET */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+#root {
+  display: block;
+  min-height: 100vh;
+}
+
+/* PORTAL LAYOUT */
+.portal-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* DASHBOARD CARDS */
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  border: 1px solid #e1e4e8;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 10px 25px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-blue { background-color: #007bff; color: white; }
+.btn-blue:hover { background-color: #0056b3; }
+
+.btn-green { background-color: #28a745; color: white; }
+
+/* SEARCH BAR */
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-right: 10px;
+}
