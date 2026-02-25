@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { userService } from "../../services/userservice";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -11,12 +12,32 @@ const Register = () => {
     role: "USER",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [loading, setLoading] = useState(false);
 
-    console.log("Registered User:", formData);
-    alert("Registration Successful! Please Login.");
-    navigate("/");
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await userService.register(formData);
+
+      console.log("Registered User:", response);
+
+      alert("Registration Successful! Please Login.");
+      navigate("/");
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert("Registration Failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -103,6 +124,11 @@ const Register = () => {
           background: #1d4ed8;
         }
 
+        .register-btn:disabled {
+          background: #94a3b8;
+          cursor: not-allowed;
+        }
+
         .register-footer {
           text-align: center;
           margin-top: 20px;
@@ -122,7 +148,7 @@ const Register = () => {
 
       <div className="register-container">
         <div className="register-card">
-          {/* 🔥 Top Heading */}
+
           <h2 className="register-title">Register to MyService</h2>
           <p className="register-subtitle">
             Create your account to continue
@@ -133,10 +159,10 @@ const Register = () => {
               <label>Full Name</label>
               <input
                 type="text"
+                name="fullName"
                 required
-                onChange={(e) =>
-                  setFormData({ ...formData, fullName: e.target.value })
-                }
+                value={formData.fullName}
+                onChange={handleChange}
               />
             </div>
 
@@ -144,10 +170,10 @@ const Register = () => {
               <label>Email Address</label>
               <input
                 type="email"
+                name="email"
                 required
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
+                value={formData.email}
+                onChange={handleChange}
               />
             </div>
 
@@ -155,20 +181,19 @@ const Register = () => {
               <label>Password</label>
               <input
                 type="password"
+                name="password"
                 required
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
+                value={formData.password}
+                onChange={handleChange}
               />
             </div>
 
             <div className="form-group">
               <label>I want to join as:</label>
               <select
+                name="role"
                 value={formData.role}
-                onChange={(e) =>
-                  setFormData({ ...formData, role: e.target.value })
-                }
+                onChange={handleChange}
               >
                 <option value="USER">Customer</option>
                 <option value="PROFESSIONAL">Professional</option>
@@ -176,7 +201,9 @@ const Register = () => {
               </select>
             </div>
 
-            <button className="register-btn">Sign Up</button>
+            <button className="register-btn" disabled={loading}>
+              {loading ? "Creating Account..." : "Sign Up"}
+            </button>
           </form>
 
           <div className="register-footer">

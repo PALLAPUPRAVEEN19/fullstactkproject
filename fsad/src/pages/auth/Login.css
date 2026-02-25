@@ -1,0 +1,349 @@
+/* 1. Global & Font Setup */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary-color: #5d5fef;
+    --primary-hover: #4a4cdb;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --input-border: #e2e8f0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Page Layout & Background Slider */
+.auth-page {
+    position: relative;
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow: hidden;
+}
+
+.background-slides {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    filter: brightness(0.6); /* Makes the card pop more */
+    animation: crossFade 18s infinite ease-in-out;
+}
+
+/* Replace these URLs with your preferred images */
+.slide-1 { 
+    background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80'); 
+    animation-delay: 0s; 
+}
+.slide-2 { 
+    background-image: url('https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80'); 
+    animation-delay: 6s; 
+}
+.slide-3 { 
+    background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80'); 
+    animation-delay: 12s; 
+}
+
+@keyframes crossFade {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    10%, 33% { opacity: 1; }
+    43%, 90% { opacity: 0; transform: scale(1.05); }
+}
+
+/* 3. The Login Card (Glassmorphism) */
+.auth-container {
+    width: 100%;
+    max-width: 440px;
+    padding: 20px;
+    z-index: 10;
+}
+
+.auth-card {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 28px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    text-align: center;
+}
+
+/* 4. Branding & Header */
+.auth-logo-box {
+    background: var(--primary-color);
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 16px rgba(93, 95, 239, 0.4);
+}
+
+.brand-name {
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+}
+
+/* 5. Form & Inputs */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.field-icon {
+    position: absolute;
+    left: 16px;
+    color: var(--text-muted);
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 1.5px solid var(--input-border);
+    border-radius: 14px;
+    font-size: 1rem;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1);
+}
+
+.eye-btn {
+    position: absolute;
+    right: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+}
+
+/* 6. Action Button */
+.submit-btn {
+    width: 100%;
+    height: 54px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(93, 95, 239, 0.3);
+}
+
+.submit-btn:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 7. Footer Links */
+.auth-footer {
+    margin-top: 28px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.signup-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 800;
+    margin-left: 5px;
+    transition: color 0.2s;
+}
+
+.signup-link:hover {
+    color: var(--primary-hover);
+}
+/* Animated Background Slider */
+.auth-background-slider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Keep it behind the card */
+    overflow: hidden;
+}
+
+.auth-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    animation: backgroundFade 15s infinite ease-in-out;
+}
+
+/* Slide Images - Replace URLs with your preferred high-res images */
+.auth-slide:nth-child(1) {
+    background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80');
+    animation-delay: 0s;
+}
+
+.auth-slide:nth-child(2) {
+    background-image: url('https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80');
+    animation-delay: 5s;
+}
+
+.auth-slide:nth-child(3) {
+    background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80');
+    animation-delay: 10s;
+}
+
+/* Keyframes for the Cross-Fade Effect */
+@keyframes backgroundFade {
+    0% { opacity: 0; transform: scale(1); }
+    10% { opacity: 0.4; } /* Subtle brightness so text stays readable */
+    33% { opacity: 0.4; }
+    43% { opacity: 0; transform: scale(1.1); } /* Slight zoom effect */
+    100% { opacity: 0; }
+}
+
+/* Optional: Add an overlay to make the card stand out more */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(248, 250, 255, 0.85); /* Matches your light purple theme */
+    z-index: -1;
+}
+/* Animated Background Slides */
+.background-slides {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  /* Animation: name | duration | timing-function | iteration-count */
+  animation: slideAnimation 18s infinite ease-in-out;
+}
+
+/* Slide Images */
+.slide-1 {
+  background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80');
+  animation-delay: 0s;
+}
+
+.slide-2 {
+  background-image: url('https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80');
+  animation-delay: 6s;
+}
+
+.slide-3 {
+  background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80');
+  animation-delay: 12s;
+}
+
+@keyframes slideAnimation {
+  0% { opacity: 0; transform: scale(1); }
+  10% { opacity: 0.5; } /* Subtle opacity so text remains readable */
+  33% { opacity: 0.5; }
+  43% { opacity: 0; transform: scale(1.1); } /* Slight zoom out */
+  100% { opacity: 0; }
+}
+
+/* Optional Dark Overlay to make the white card pop */
+.background-slides::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Card Styling */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  z-index: 1;
+}

@@ -1,72 +1,125 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { Mail, Lock, Eye, EyeOff, Sparkles } from "lucide-react";
+import { userService } from "../../services/userservice";
+import './Login.css';
 
 const Login = ({ setUser }) => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    role: 'user' // Default role
+    email: "",
+    password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // This updates the 'user' state in App.jsx
-    const loggedInUser = { 
-      email: formData.email, 
-      role: formData.role 
-    };
-    
-    setUser(loggedInUser);
+    setLoading(true);
 
-    // Navigate to the specific portal based on selection
-    navigate(`/${formData.role}-portal`);
-  };
+    try {
+      // 1. Call backend service
+      const user = await userService.login(formData.email, formData.password);
+      
+      // 2. Normalize role (e.g., "Admin" -> "admin")
+      const role = user.role.toLowerCase();
+      const loggedInUser = { ...user, role };
 
-  // Inline styles for guaranteed visibility
-  const boxStyle = {
-    maxWidth: '400px', margin: '100px auto', padding: '30px',
-    backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-    textAlign: 'center'
-  };
+      // 3. Update global state and local storage
+      setUser(loggedInUser);
+      localStorage.setItem("user", JSON.stringify(loggedInUser));
 
-  const inputStyle = {
-    width: '100%', padding: '12px', margin: '10px 0',
-    border: '1px solid #ddd', borderRadius: '6px', boxSizing: 'border-box'
+      // 4. Navigate to the specific portal
+      navigate(`/${role}-portal`);
+
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div style={boxStyle}>
-      <h2 style={{color: '#2563eb'}}>Login to MyService</h2>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="email" placeholder="Email Address" required style={inputStyle}
-          onChange={(e) => setFormData({...formData, email: e.target.value})}
-        />
-        <input 
-          type="password" placeholder="Password" required style={inputStyle}
-          onChange={(e) => setFormData({...formData, password: e.target.value})}
-        />
-        <label style={{display: 'block', textAlign: 'left', fontSize: '14px', marginTop: '10px'}}>Login as:</label>
-        <select 
-          style={inputStyle} 
-          value={formData.role}
-          onChange={(e) => setFormData({...formData, role: e.target.value})}
-        >
-          <option value="user">User / Customer</option>
-          <option value="professional">Professional</option>
-          <option value="admin">Platform Admin</option>
-          <option value="support">Customer Support</option>
-        </select>
-        
-        <button type="submit" className="btn-primary" style={{width: '100%', marginTop: '20px'}}>
-          Enter Dashboard
-        </button>
-      </form>
-      <p style={{marginTop: '20px', fontSize: '14px'}}>
-        New user? <Link to="/register" style={{color: '#2563eb', fontWeight: 'bold'}}>Create an Account</Link>
-      </p>
+    <div className="auth-page">
+      {/* Background Slides Section - Controlled by CSS animations */}
+      <div className="background-slides">
+        <div className="slide slide-1"></div>
+        <div className="slide slide-2"></div>
+        <div className="slide slide-3"></div>
+      </div>
+
+      <div className="auth-container">
+        <div className="auth-card">
+          {/* Brand Header */}
+          <div className="auth-logo-box">
+            <Sparkles size={28} color="white" fill="white" />
+          </div>
+          <h1 className="brand-name">ServicePro</h1>
+          <p className="subtitle">Welcome back</p>
+
+          <form onSubmit={handleSubmit}>
+            {/* Email Field */}
+            <div className="input-group">
+              <label>Email Address</label>
+              <div className="input-wrapper">
+                <Mail className="field-icon" size={18} />
+                <input
+                  type="email"
+                  placeholder="name@company.com"
+                  required
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+
+            {/* Password Field */}
+            <div className="input-group">
+              <label>Password</label>
+              <div className="input-wrapper">
+                <Lock className="field-icon" size={18} />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  required
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                />
+                <button
+                  type="button"
+                  className="eye-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={loading}
+            >
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
+
+          {/* Footer Link */}
+          <p className="auth-footer">
+            Don't have an account?{" "}
+            <Link to="/register" className="signup-link">
+              Sign Up
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
